@@ -1144,6 +1144,13 @@ Window {
             source: "Resources/Images/background_rectangle.png"
         }
 
+        // Launcher character artwork. Add future character artwork to this list.
+        property var hero_artwork_sources: [
+            "qrc:/Resources/Images/bluestreak.png",
+            "qrc:/Resources/Images/ms_metal.png"
+        ]
+        property int hero_artwork_index: 0
+
         Image {
             id: hero_image
             x: -453
@@ -1151,9 +1158,49 @@ Window {
             width: 942
             height: 683
             fillMode: Image.PreserveAspectFit
-            source: "Resources/Images/bluestreak.png"
+            source: background.hero_artwork_sources[background.hero_artwork_index]
+            opacity: 1
+            asynchronous: true
         }
 
+        Timer {
+            id: hero_artwork_timer
+            interval: 10000
+            repeat: true
+            running: true
+            onTriggered: {
+                background.hero_artwork_index =
+                        (background.hero_artwork_index + 1) % background.hero_artwork_sources.length
+            }
+        }
+
+        SequentialAnimation {
+            id: hero_artwork_fade
+            running: false
+
+            NumberAnimation {
+                target: hero_image
+                property: "opacity"
+                to: 0
+                duration: 400
+            }
+            ScriptAction {
+                script: hero_image.source = background.hero_artwork_sources[background.hero_artwork_index]
+            }
+            NumberAnimation {
+                target: hero_image
+                property: "opacity"
+                to: 1
+                duration: 400
+            }
+        }
+
+        Connections {
+            target: background
+            function onHero_artwork_indexChanged() {
+                hero_artwork_fade.restart()
+            }
+        }
 
 
         // SwipeView Server Info and Settings START
