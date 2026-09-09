@@ -1146,8 +1146,8 @@ Window {
 
         // Launcher character artwork. Add future character artwork to this list.
         property var hero_artwork_sources: [
-            "qrc:/Resources/Images/bluestreak.png",
-            "qrc:/Resources/Images/ms_metal.png"
+            "qrc:/Resources/Images/ms_metal.png",
+            "qrc:/Resources/Images/bluestreak.png"
         ]
         property int hero_artwork_index: 0
 
@@ -1183,9 +1183,6 @@ Window {
                 property: "opacity"
                 to: 0
                 duration: 400
-            }
-            ScriptAction {
-                script: hero_image.source = background.hero_artwork_sources[background.hero_artwork_index]
             }
             NumberAnimation {
                 target: hero_image
