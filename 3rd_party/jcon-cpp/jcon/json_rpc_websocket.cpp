@@ -42,9 +42,9 @@ void JsonRpcWebSocket::setupSocket()
     connect(m_socket, &QWebSocket::textMessageReceived,
             this, &JsonRpcWebSocket::dataReady);
 
-    void (QAbstractSocket::*errorPtr)(QAbstractSocket::SocketError) =
-        &QAbstractSocket::errorOccurred;
-    connect(m_socket, errorPtr, this,
+    connect(m_socket,
+            QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error),
+            this,
             [this](QAbstractSocket::SocketError error) {
                 emit socketError(m_socket, error);
             });
